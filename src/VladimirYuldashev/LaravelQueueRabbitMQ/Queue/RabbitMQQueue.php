@@ -62,6 +62,13 @@ class RabbitMQQueue extends Queue implements QueueContract
         $this->channel = $this->getChannel();
     }
 
+    /** @inheritdoc */
+    public function size($queueName = null): int
+    {
+        $queue = $this->getQueueName($queue);
+        return $this->declareQueue($queue);
+    }
+
     /**
      * Push a new job onto the queue.
      *
