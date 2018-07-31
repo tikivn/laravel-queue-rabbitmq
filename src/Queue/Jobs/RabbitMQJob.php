@@ -5,7 +5,6 @@ namespace VladimirYuldashev\LaravelQueueRabbitMQ\Queue\Jobs;
 use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as JobContract;
-use Illuminate\Database\DetectsDeadlocks;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Queue\Jobs\JobName;
 use Illuminate\Support\Str;
@@ -15,8 +14,6 @@ use VladimirYuldashev\LaravelQueueRabbitMQ\Queue\RabbitMQQueue;
 
 class RabbitMQJob extends Job implements JobContract
 {
-    use DetectsDeadlocks;
-
     /**
      * Same as RabbitMQQueue, used for attempt counts.
      */
@@ -75,7 +72,7 @@ class RabbitMQJob extends Job implements JobContract
      *
      * @return int
      */
-    public function attempts(): int
+    public function attempts()
     {
         // set default job attempts to 1 so that jobs can run without retry
         $defaultAttempts = 1;
@@ -88,7 +85,7 @@ class RabbitMQJob extends Job implements JobContract
      *
      * @return string
      */
-    public function getRawBody(): string
+    public function getRawBody()
     {
         return $this->message->getBody();
     }
@@ -129,7 +126,7 @@ class RabbitMQJob extends Job implements JobContract
      *
      * @return string
      */
-    public function getJobId(): string
+    public function getJobId()
     {
         return $this->message->getCorrelationId();
     }

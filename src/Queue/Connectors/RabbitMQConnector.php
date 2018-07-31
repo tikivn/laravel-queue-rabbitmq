@@ -32,7 +32,7 @@ class RabbitMQConnector implements ConnectorInterface
      *
      * @return Queue
      */
-    public function connect(array $config): Queue
+    public function connect(array $config)
     {
         if (false === array_key_exists('factory_class', $config)) {
             throw new \LogicException('The factory_class option is missing though it is required.');

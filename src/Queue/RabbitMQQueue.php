@@ -34,7 +34,7 @@ class RabbitMQQueue extends Queue implements QueueContract
     {
         $this->context = $context;
 
-        $this->queueName = $config['queue'] ?? $config['options']['queue']['name'];
+        $this->queueName = isset($config['queue']) ? $config['queue'] : $config['options']['queue']['name'];
         $this->queueOptions = $config['options']['queue'];
         $this->queueOptions['arguments'] = isset($this->queueOptions['arguments']) ?
             json_decode($this->queueOptions['arguments'], true) : [];
@@ -43,11 +43,11 @@ class RabbitMQQueue extends Queue implements QueueContract
         $this->exchangeOptions['arguments'] = isset($this->exchangeOptions['arguments']) ?
             json_decode($this->exchangeOptions['arguments'], true) : [];
 
-        $this->sleepOnError = $config['sleep_on_error'] ?? 5;
+        $this->sleepOnError = isset($config['sleep_on_error']) ? $config['sleep_on_error'] : 5;
     }
 
     /** @inheritdoc */
-    public function size($queueName = null): int
+    public function size($queueName = null)
     {
         /** @var AmqpQueue $queue */
         list($queue) = $this->declareEverything($queueName);
@@ -152,7 +152,7 @@ class RabbitMQQueue extends Queue implements QueueContract
      *
      * @return string
      */
-    public function getCorrelationId(): string
+    public function getCorrelationId()
     {
         return $this->correlationId ?: uniqid('', true);
     }
@@ -164,7 +164,7 @@ class RabbitMQQueue extends Queue implements QueueContract
      *
      * @return void
      */
-    public function setCorrelationId(string $id)
+    public function setCorrelationId($id)
     {
         $this->correlationId = $id;
     }
@@ -172,7 +172,7 @@ class RabbitMQQueue extends Queue implements QueueContract
     /**
      * @return AmqpContext
      */
-    public function getContext(): AmqpContext
+    public function getContext()
     {
         return $this->context;
     }
@@ -182,7 +182,7 @@ class RabbitMQQueue extends Queue implements QueueContract
      *
      * @return array [Interop\Amqp\AmqpQueue, Interop\Amqp\AmqpTopic]
      */
-    private function declareEverything(string $queueName = null): array
+    private function declareEverything($queueName = null)
     {
         $queueName = $queueName ?: $this->queueName;
         $exchangeName = $this->exchangeOptions['name'] ?: $queueName;

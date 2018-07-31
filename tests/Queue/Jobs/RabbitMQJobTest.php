@@ -4,7 +4,6 @@ namespace VladimirYuldashev\LaravelQueueRabbitMQ\Tests\Queue\Jobs;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Job as JobContract;
-use Illuminate\Database\DetectsDeadlocks;
 use Illuminate\Queue\Jobs\Job;
 use Interop\Amqp\AmqpConsumer;
 use Interop\Amqp\Impl\AmqpMessage;
@@ -27,13 +26,6 @@ class RabbitMQJobTest extends TestCase
         $rc = new \ReflectionClass(RabbitMQJob::class);
 
         $this->assertTrue($rc->isSubclassOf(Job::class));
-    }
-
-    public function testShouldUseDetectDeadlocksTrait()
-    {
-        $rc = new \ReflectionClass(RabbitMQJob::class);
-
-        $this->assertContains(DetectsDeadlocks::class, $rc->getTraitNames());
     }
 
     public function testCouldBeConstructedWithExpectedArguments()
